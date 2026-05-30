@@ -1,3 +1,4 @@
+import os
 from inventory import add_product, db_add_stock, show_products, register_user
 
 from flask import Flask, render_template, request, redirect, url_for
@@ -65,5 +66,9 @@ def all_products():
     return render_template("all-products.html", the_products=the_products)
 
 
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 5000))
+    )
