@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block title %}سجل المبيعات — مستودعي{% endblock %}
+
+{% block body %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">📋 سجل المبيعات</h2>
+    <span class="badge bg-secondary fs-6">{{ sales|length }} عملية</span>
+</div>
+
+{% if sales %}
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>المنتج</th>
+                    <th>الكمية المباعة</th>
+                    <th>سعر الوحدة</th>
+                    <th>إجمالي المبلغ</th>
+                    <th>التاريخ والوقت</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sale in sales %}
+                <tr>
+                    <td class="text-muted">{{ sale.id }}</td>
+                    <td><strong>{{ sale.productname }}</strong></td>
+                    <td>
+                        <span class="badge bg-primary">{{ sale.quantity_sold }} قطعة</span>
+                    </td>
+                    <td>{{ "%.2f"|format(sale.price_at_sale) }} ر.س</td>
+                    <td class="text-success fw-bold">{{ "%.2f"|format(sale.total_amount) }} ر.س</td>
+                    <td class="text-muted small">{{ sale.sold_at }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% else %}
+<div class="text-center mt-5">
+    <p class="fs-4 text-muted">📭 لا توجد مبيعات مسجلة بعد</p>
+    <a href="/add_new_stock" class="btn btn-primary">ابدأ البيع الآن</a>
+</div>
+{% endif %}
+
+{% endblock %}

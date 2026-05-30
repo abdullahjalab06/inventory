@@ -1,28 +1,52 @@
-{% extends "layout.html"  %}
+{% extends "layout.html" %}
 
-{% block head %}
-<title>All Products</title>
-
-{% endblock %}
+{% block title %}جميع المنتجات — مستودعي{% endblock %}
 
 {% block body %}
-<table class="table">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">id</th>
-      <th scope="col">اسم المنتج</th>
-      <th scope="col">الكمية</th>
-      <th scope="col">السعر</th>
-    </tr>
-      {% for product in the_products %}
-      <tr>
-        <th scope="row">{{ product.id }}</th>
-        <td>{{ product.productname }}</td>
-        <td>{{ product.quantity }}</td>
-        <td>{{ product.price }}</td>
-      </tr>
-      {% endfor %}
-      
-</table>
-{% endblock %}
 
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">📦 جميع المنتجات</h2>
+    <a href="/add" class="btn btn-success btn-sm">➕ إضافة منتج</a>
+</div>
+
+{% if the_products %}
+<div class="card shadow-sm">
+    <table class="table table-hover mb-0">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>اسم المنتج</th>
+                <th>الكمية</th>
+                <th>السعر</th>
+                <th>الحالة</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in the_products %}
+            <tr>
+                <td class="text-muted">{{ product.id }}</td>
+                <td><strong>{{ product.productname }}</strong></td>
+                <td>{{ product.quantity }}</td>
+                <td>{{ "%.2f"|format(product.price) }} ر.س</td>
+                <td>
+                    {% if product.quantity == 0 %}
+                        <span class="badge bg-danger">نفذ المخزون</span>
+                    {% elif product.quantity < 10 %}
+                        <span class="badge bg-warning text-dark">مخزون منخفض</span>
+                    {% else %}
+                        <span class="badge bg-success">متوفر</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="text-center mt-5">
+    <p class="fs-4 text-muted">📭 لا توجد منتجات بعد</p>
+    <a href="/add" class="btn btn-primary">أضف أول منتج</a>
+</div>
+{% endif %}
+
+{% endblock %}

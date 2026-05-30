@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+
+{% block title %}البحث — مستودعي{% endblock %}
+
+{% block body %}
+
+<h2 class="mb-4">🔍 البحث عن منتج</h2>
+
+<!-- مربع البحث -->
+<form method="GET" action="/search" class="mb-4">
+    <div class="input-group input-group-lg">
+        <input
+            type="text"
+            name="q"
+            class="form-control"
+            placeholder="اكتب اسم المنتج..."
+            value="{{ query }}"
+            autofocus
+        >
+        <button type="submit" class="btn btn-primary">بحث</button>
+        {% if query %}
+        <a href="/search" class="btn btn-outline-secondary">مسح</a>
+        {% endif %}
+    </div>
+</form>
+
+<!-- نتائج البحث -->
+{% if query %}
+    {% if results %}
+    <p class="text-muted">تم العثور على <strong>{{ results|length }}</strong> نتيجة لـ "<strong>{{ query }}</strong>"</p>
+
+    <div class="card shadow-sm">
+        <table class="table table-hover mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>اسم المنتج</th>
+                    <th>الكمية</th>
+                    <th>السعر</th>
+                    <th>الحالة</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in results %}
+                <tr>
+                    <td class="text-muted">{{ product.id }}</td>
+                    <td><strong>{{ product.productname }}</strong></td>
+                    <td>{{ product.quantity }}</td>
+                    <td>{{ "%.2f"|format(product.price) }} ر.س</td>
+                    <td>
+                        {% if product.quantity == 0 %}
+                            <span class="badge bg-danger">نفذ المخزون</span>
+                        {% elif product.quantity < 10 %}
+                            <span class="badge bg-warning text-dark">مخزون منخفض</span>
+                        {% else %}
+                            <span class="badge bg-success">متوفر</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% else %}
+    <div class="text-center mt-4">
+        <p class="fs-5 text-muted">❌ لا توجد نتائج لـ "<strong>{{ query }}</strong>"</p>
+        <p class="text-muted">تأكد من الكتابة أو جرب كلمة أخرى</p>
+    </div>
+    {% endif %}
+
+{% else %}
+<div class="text-center text-muted mt-4">
+    <p class="fs-5">🔎 اكتب اسم المنتج في مربع البحث أعلاه</p>
+</div>
+{% endif %}
+
+{% endblock %}

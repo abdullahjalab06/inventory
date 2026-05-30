@@ -1,60 +1,58 @@
 {% extends "layout.html" %}
 
+{% block title %}تحديث المخزون — مستودعي{% endblock %}
+
 {% block body %}
 
-<h1>Update Quantity</h1>
+<h2 class="mb-4">🔄 تحديث المخزون والمبيعات</h2>
 
+<div class="card shadow-sm">
+    <table class="table table-bordered table-hover mb-0">
+        <thead class="table-dark">
+            <tr>
+                <th>المنتج</th>
+                <th>الكمية الحالية</th>
+                <th>إضافة مخزون</th>
+                <th>بيع منتج</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td><strong>{{ product.productname }}</strong></td>
+                <td>
+                    {% if product.quantity == 0 %}
+                        <span class="badge bg-danger">نفذ</span>
+                    {% elif product.quantity < 10 %}
+                        <span class="badge bg-warning text-dark">{{ product.quantity }}</span>
+                    {% else %}
+                        <span class="badge bg-success">{{ product.quantity }}</span>
+                    {% endif %}
+                </td>
 
-<table class="table table-bordered table-hover">
+                <!-- إضافة مخزون -->
+                <td>
+                    <form action="/add_new_stock/{{ product.id }}" method="POST" class="d-flex gap-2">
+                        <input type="number" name="quantity" class="form-control form-control-sm"
+                               placeholder="الكمية" min="1" required style="width:100px">
+                        <button type="submit" class="btn btn-success btn-sm">إضافة</button>
+                    </form>
+                </td>
 
-    <tr>
-        <th>اسم المنتج</th>
-        <th>الكمية الحالية</th>
-        <th>الكمية الجديدة</th>
-    </tr>
-
-    {% for product in products %}
-
-    <tr>
-
-        <td>{{ product.productname }}</td>
-
-        <td>{{ product.quantity }}</td>
-
-        <td>
-
-            <form action="/add_new_stock/{{ product.id }}"
-                  method="POST">
-
-                <input type="number"
-                          name="quantity"
-                          class="form-control"
-                          required>
-
-                <<button type="submit" class="btn btn-success">
-                    تحديث الكمية
-                </button>
-                
-            </form>
-                <form action="/sell_product/{{ product.id }}" method="POST">
-
-        <input type="number"
-               name="amount"
-               class="form-control"
-               placeholder="كمية البيع"
-               required>
-
-        <button type="submit" class="btn btn-danger">
-            بيع المنتج
-        </button>
-
-        </form>
-        </td>
-
-    </tr>
-
-    {% endfor %}
-
-</table>
+                <!-- بيع منتج -->
+                <td>
+                    <form action="/sell_product/{{ product.id }}" method="POST" class="d-flex gap-2">
+                        <input type="number" name="amount" class="form-control form-control-sm"
+                               placeholder="الكمية" min="1" max="{{ product.quantity }}"
+                               {% if product.quantity == 0 %}disabled{% endif %} required style="width:100px">
+                        <button type="submit" class="btn btn-danger btn-sm"
+                                {% if product.quantity == 0 %}disabled{% endif %}>بيع</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
 {% endblock %}
