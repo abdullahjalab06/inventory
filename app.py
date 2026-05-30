@@ -44,7 +44,7 @@ def add_new_stock(id):
 
         db_add_stock(id, quantity)
         sell_product()
-
+        return render_template("index.html")
         return redirect(url_for("show_add_stock"))
 
 
