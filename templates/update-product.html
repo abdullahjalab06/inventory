@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<h1>Update Quantity</h1>
+
+
+<table class="table table-bordered table-hover">
+
+    <tr>
+        <th>Product Name</th>
+        <th>Current Quantity</th>
+        <th>New Quantity</th>
+    </tr>
+
+    {% for product in products %}
+
+    <tr>
+
+        <td>{{ product.productname }}</td>
+
+        <td>{{ product.quantity }}</td>
+
+        <td>
+
+            <form action="/add_new_stock/{{ product.id }}"
+                  method="POST">
+
+                <input type="number"
+                          name="quantity"
+                          class="form-control"
+                          required>
+
+                <<button type="submit" class="btn btn-success">
+                    Update
+                </button>
+
+            </form>
+
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+{% endblock %}
