@@ -30,11 +30,11 @@ def db_add_stock(id, quantity):
 
     conn.close()
 
-def sell_product(productname, amount):
+def sell_product(id, amount):
     conn = sqlite3.connect("inventory.db")
     cursor = conn.cursor()
 
-    cursor.execute("SELECT quantity FROM products WHERE productname = ?", (productname,))
+    cursor.execute("SELECT quantity FROM products WHERE id = ?", (id,))
     product = cursor.fetchone()
 
     if product is None:
@@ -50,8 +50,8 @@ def sell_product(productname, amount):
     cursor.execute("""
         UPDATE products
         SET quantity = ?
-        WHERE productname = ?
-    """, (new_quantity, productname))
+        WHERE id = ?
+    """, (new_quantity, id))
 
     conn.commit()
     conn.close()
