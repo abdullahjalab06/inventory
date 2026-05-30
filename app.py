@@ -1,5 +1,5 @@
 import os
-from inventory import add_product, db_add_stock, show_products, register_user
+from inventory import add_product, db_add_stock, show_products, register_user, sell_product
 
 from flask import Flask, render_template, request, redirect, url_for
 
@@ -40,8 +40,10 @@ def show_add_stock():
 def add_new_stock(id):
     if request.method=="POST":
         quantity = int(request.form["quantity"])
+        sell_product = int(request.form["amount"])
 
         db_add_stock(id, quantity)
+        sell_product()
 
         return redirect(url_for("show_add_stock"))
 
@@ -64,6 +66,16 @@ def all_products():
     the_products = show_products()
 
     return render_template("all-products.html", the_products=the_products)
+
+
+@app.route("/sell_product/<int:id>", methods=["POST"])
+def sell_product_route(id):
+    amount = int(request.form["amount"])
+    
+    result = sell_product(id, amount)
+    
+    return redirect(url_for("show_add_stock"))
+    
 
 
 

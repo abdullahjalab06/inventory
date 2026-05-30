@@ -38,11 +38,13 @@ def sell_product(id, amount):
     product = cursor.fetchone()
 
     if product is None:
+        conn.close()
         return "Product Not Found!"
 
     current_quantity = product[0]
 
     if current_quantity < amount:
+        conn.close()
         return "Not enough stock!"
 
     new_quantity = current_quantity - amount
@@ -55,7 +57,6 @@ def sell_product(id, amount):
 
     conn.commit()
     conn.close()
-
     print("Updated rows:", cursor.rowcount)
 
 

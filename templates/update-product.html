@@ -34,9 +34,21 @@
                 <<button type="submit" class="btn btn-success">
                     تحديث الكمية
                 </button>
-
+                
             </form>
+                <form action="/sell_product/{{ product.id }}" method="POST">
 
+        <input type="number"
+               name="amount"
+               class="form-control"
+               placeholder="كمية البيع"
+               required>
+
+        <button type="submit" class="btn btn-danger">
+            بيع المنتج
+        </button>
+
+        </form>
         </td>
 
     </tr>
