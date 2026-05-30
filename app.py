@@ -25,7 +25,7 @@ def add_prod():
 
         add_product(productname, quantity, price)
 
-        return "Product Added"
+        return render_template("index.html")
 
     return render_template("add-product.html")
 
