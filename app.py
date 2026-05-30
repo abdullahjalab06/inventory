@@ -67,15 +67,11 @@ def all_products():
 
     return render_template("all-products.html", the_products=the_products)
 
-
 @app.route("/sell_product/<int:id>", methods=["POST"])
 def sell_product_route(id):
     amount = int(request.form["amount"])
-    
-    result = sell_product(id, amount)
-    
+    sell_product(id, amount)
     return redirect(url_for("show_add_stock"))
-    
 
 
 
