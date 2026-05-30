@@ -1,6 +1,6 @@
 import sqlite3
 
-conn = sqlite3.connect("inventory.db")
+conn = sqlite3.connect("inventory1.db")
 
 conn.execute("""
 CREATE TABLE IF NOT EXISTS products(
