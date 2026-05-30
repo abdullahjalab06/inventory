@@ -71,7 +71,7 @@ def all_products():
 def sell_product_route(id):
     amount = int(request.form["amount"])
     sell_product(id, amount)
-    return redirect(url_for("show_add_stock"))
+    return redirect(url_for("index.html"))
 
 
 
